@@ -1,88 +1,120 @@
-/*
-ID: shh_nam1
-LANG: C++
-TASK: dualpal
-*/
 #include <iostream>
 #include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
-int change(int base,int num,int &len,int * store);
-int check(int * store,int len);
+const int maxit=10;
+
+int place(int i,int j);
+int fresh(int i,int j,int num,int flag);
+int dfs(int now);
+
+char pre[maxit][maxit];
+int mapp[maxit][maxit];
+int row[maxit][maxit],col[maxit][maxit],brick[maxit][maxit];
+int store[50],loca;
 
 int main()
 {
-    int b;
-    scanf("%d",&b);
-    int store[10000],len;
-    for(int i=1; i<=300; i++)
+    int t;
+    scanf("%d",&t);
+    while(t--)
     {
-        change(b,i*i,len,store);
-        if(check(store,len)==1)
+        memset(store,-1,sizeof(store));
+        memset(row,0,sizeof(row));
+        memset(col,0,sizeof(col));
+        memset(brick,0,sizeof(brick));
+        loca=0;
+        for(int i=0; i<9; i++)
+            scanf("%s",pre[i]);
+        for(int i=0; i<9; i++)
         {
-            if(b<=10)
+            for(int j=0; j<9; j++)
             {
-                printf("%d ",i);
-                for(int j=len-1; j>=0; j--)
+                mapp[i][j]=pre[i][j]-'0';
+                if(mapp[i][j]==0)
+                    store[loca++]=9*i+j;
+                else
                 {
-                    printf("%d",store[j]);
+                    row[i][mapp[i][j]]=1;
+                    col[j][mapp[i][j]]=1;
+                    brick[place(i,j)][mapp[i][j]]=1;
                 }
             }
-            else
+        }
+        int ans=dfs(0);
+        if(ans==1)
+        {
+            for(int i=0; i<9; i++)
             {
-                int tmp[10000],tlen;
-                change(b,i,tlen,tmp);
-                for(int j=tlen-1; j>=0; j--)
-                {
-                    char use1='A';
-                    if(tmp[j]>10)
-                        cout<<(char)(use1+tmp[j]-11);
-                    else
-                        printf("%d",tmp[j]);
-                }
-                printf(" ");
-                for(int j=len-1; j>=0; j--)
-                {
-                    char use1='A';
-                    if(tmp[j]>10)
-                        cout<<(char)(use1+tmp[j]-11);
-                    else
-                        printf("%d",tmp[j]);
-                }
+                for(int j=0; j<9; j++)
+                    printf("%d",mapp[i][j]);
+                printf("\n");
             }
-            printf("\n");
         }
     }
 
     return 0;
 }
 
-int change(int base,int num,int &len,int * store)
+int place(int i,int j)
 {
-    len=0;
-    while(num>=base)
+    if(i<3)
     {
-        store[len]=num%base;
-        num/=base;
-        len++;
+        if(j<3)
+            return 0;
+        else if(j<6)
+            return 1;
+        else
+            return 2;
     }
-    store[len++]=num;
-    return 0;
+    else if(i<6)
+    {
+        if(j<3)
+            return 3;
+        else if(j<6)
+            return 4;
+        else
+            return 5;
+    }
+    else
+    {
+        if(j<3)
+            return 6;
+        else if(j<6)
+            return 7;
+        else
+            return 8;
+    }
 }
 
-int check(int * store,int len)
+int dfs(int now)
 {
-    int flag=1;
-    for(int i=0; i<len/2; i++)
-    {
-        if(store[i]!=store[len-i-1])
-        {
-            flag=0;
-            break;
-        }
-    }
-    if(flag)
+    if(now==loca)
         return 1;
+    for(int i=1; i<10; i++)
+    {
+        if(row[store[now]/9][i]==0 && col[store[now]%9][i]==0
+                && brick[place(store[now]/9,store[now]%9)][i]==0)
+        {
+            mapp[store[now]/9][store[now]%9]=i;
+            fresh(store[now]/9,store[now]%9,i,1);
+            int ans=dfs(now+1);
+            if(ans==1)
+                return 1;
+            fresh(store[now]/9,store[now]%9,i,0);
+        }
+    }
     return -1;
+}
+
+int fresh(int i,int j,int num,int flag)
+{
+    row[i][num]=flag;
+    col[j][num]=flag;
+    brick[place(i,j)][num]=flag;
+    return 0;
 }

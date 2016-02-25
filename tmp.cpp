@@ -1,79 +1,136 @@
-#include <cstdio>  
-#include <cstring>  
-#include <cmath>  
-#include <iostream>  
-#include <algorithm>  
-using namespace std;  
-#define LL __int64  
-const LL maxn=1001;  
-LL e[maxn],t;  
-LL gcd(LL a,LL b)//求最大公约数  
-{  
-    return b==0?a:gcd(b,a%b);  
-}  
-LL euler_phi(LL n)//求单个欧拉函数  
-{  
-    LL m=(LL)sqrt(n+0.5);  
-    LL i,ans=n;  
-    for(i=2;i<=m;i++)  
-        if(n%i==0)  
-        {  
-            ans=ans/i*(i-1);  
-            while(n%i==0)n/=i;  
-        }  
-    if(n>1)ans=ans/n*(n-1);  
-    return ans;  
-}  
-void find(LL n)//找出所有因子  
-{  
-    LL m=(LL)sqrt(n+0.5);  
-    for(LL i=1;i<m;i++)  
-        if(n%i==0){e[t++]=i;e[t++]=n/i;}  
-    if(m*m==n)e[t++]=m;  
-}  
-LL pow_mod(LL a,LL b,LL mod)//快速幂  
-{  
-    LL s=1;  
-    while(b)  
-    {  
-        if(b&1)  
-            s=(s*a)%mod;  
-        a=(a*a)%mod;  
-        b=b>>1;  
-    }  
-    return s;  
-}  
-int main()  
-{  
-    LL a,x,y;  
-    while(cin>>x>>y>>a)  
-    {  
-        LL m,phi,i;  
-        if(y==0){cout<<"1"<<endl;continue;}  
-        m=a/gcd(y/(x-1),a);  
-        if(gcd(m,x)!=1){cout<<"Impossible!"<<endl;continue;}//不互质，则x^k%m必定是gcd(m,x)的倍数  
-        phi=euler_phi(m);  
-        t=0;  
-        find(phi);  
-        sort(e,e+t);  
-        for(i=0;i<t;i++)  
-        {  
-            if(pow_mod(x,e[i],m)==1)  
-            {  
-                cout<<e[i]<<endl;  
-                break;  
-            }  
-        }  
-    }  
-    return 0;  
-}  
-/* 
-    euler_phi(i)，欧拉函数，表示求不大于i且与i互质的正整数个数。 
- 
-    本题递推公式化简下可得到通项公式：ak=a0+Y/(X-1)*(X^k-1);后半部分是等比数列的和。 
-    现在求ak%a0=0,即Y/(X-1)*(X^k-1)%a0==0,令m=a0/gcd(Y/(X-1),a0),则可推到求最小的k使得 
-(X^k-1)%m==0,即X^k==1(mod m). 
-    根据欧拉定理得X^euler_phi(m)==1(mod m).(X与m互质) 
-    又由抽屉原理可知，X^k的余数必定是根据euler_phi(m)的某个因子为循环节循环的。 
-所以求出最小的因子k使得X^k%m==1,即为答案 
-*/  
+/* ***********************************************
+Author        :shootPlane
+Created Time  :2016/2/25 19:56:39
+File Name     :S:\01\main.cpp
+Blog          :http://haihongblog.com
+************************************************ */
+
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <set>
+#include <map>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <ctime>
+#include <stack>
+using namespace std;
+typedef long long LL;
+const int maxn=1e5+9;
+const int inf=1e9+9;
+
+int m,n;
+int mapp[20][20];
+int flag[20][20];
+int endit[20][20];
+
+int check(int len);
+int deal();
+int output();
+
+int main()
+{
+    //freopen("in.txt","r",stdin);
+    //freopen("out.txt","w",stdout);
+	while(~scanf("%d%d",&m,&n))
+	{
+		for(int i=0;i<m;i++)
+			for(int j=0;j<n;j++)
+				scanf("%d",&mapp[i][j]);
+		int up=1<<n;
+		int gg=0;
+		for(int i=0;i<up;i++)
+		{
+			int tt=i;
+			int loca=n-1;
+			memset(flag,0,sizeof(flag));
+			while(tt)
+			{
+				endit[0][loca--]=tt&1;
+				tt>>=1;
+			}
+			check(0);
+			if(deal()==-1)
+				continue;
+			else
+			{
+				gg=1;
+				output();
+				break;
+			}
+		}
+		if(gg==0)
+			printf("IMPOSSIBLE\n");
+	}
+    return 0;
+}
+
+int deal()
+{
+	for(int i=1;i<m;i++)
+	{
+		for(int j=0;j<n;j++)
+		{
+			if(flag[i-1][j]%2==1)
+            {
+                endit[i][j]=1;
+                //flag[i-1][j]=0;
+            }
+			else
+                endit[i][j]=0;
+		}
+		check(i);
+	}
+
+	for(int i=0;i<n;i++)
+		if(flag[m-1][i]%2==1)
+			return -1;
+	return 0;
+}
+
+int check(int len) // len--hang
+{
+	for(int i=0;i<n;i++)
+	{
+		int tmp=0;
+		if(i>0)
+        {
+            if(endit[len][i-1]%2!=0)
+                tmp++;
+        }
+        if(i<n-1)
+        {
+            if(endit[len][i+1]%2!=0)
+                tmp++;
+        }
+		if(len>0)
+        {
+            if(endit[len-1][i]%2==1)
+                tmp++;
+        }
+        tmp+=mapp[len][i];
+        tmp+=endit[len][i];
+		flag[len][i]=tmp%2;
+	}
+	return 0;
+}
+
+int output()
+{
+	for(int i=0;i<m;i++)
+	{
+		for(int j=0;j<n;j++)
+		{
+			if(j==0)
+				printf("%d",endit[i][j]%2);
+			else
+				printf(" %d",endit[i][j]%2);
+		}
+		printf("\n");
+	}
+	return 0;
+}

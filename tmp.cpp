@@ -1,7 +1,7 @@
 /* ***********************************************
 Author        :shootPlane
-Created Time  :2016/2/25 19:56:39
-File Name     :S:\01\main.cpp
+Created Time  :2016/5/22 19:45:36
+File Name     :D:\sherlock\main.cpp
 Blog          :http://haihongblog.com
 ************************************************ */
 
@@ -19,118 +19,83 @@ Blog          :http://haihongblog.com
 #include <ctime>
 #include <stack>
 using namespace std;
-typedef long long LL;
-const int maxn=1e5+9;
+typedef long long ll;
+const int maxn=2e4+9;
 const int inf=1e9+9;
+const double eps=1e-9;
 
-int m,n;
-int mapp[20][20];
-int flag[20][20];
-int endit[20][20];
+int n;
+double k[maxn],e[maxn];
+double a[maxn],b[maxn],c[maxn];
+vector<int> aha[maxn];
+int flag[maxn];
 
-int check(int len);
-int deal();
-int output();
+int dfs(int node,int f);
 
 int main()
 {
     //freopen("in.txt","r",stdin);
     //freopen("out.txt","w",stdout);
-	while(~scanf("%d%d",&m,&n))
+    int t;
+	scanf("%d",&t);
+	int cass=1;
+	while(t--)
 	{
-		for(int i=0;i<m;i++)
-			for(int j=0;j<n;j++)
-				scanf("%d",&mapp[i][j]);
-		int up=1<<n;
-		int gg=0;
-		for(int i=0;i<up;i++)
+		for(int i=0;i<maxn;i++) aha[i].clear();
+
+		scanf("%d",&n);
+		for(int i=0;i<n-1;i++)
 		{
-			int tt=i;
-			int loca=n-1;
-			memset(flag,0,sizeof(flag));
-			while(tt)
-			{
-				endit[0][loca--]=tt&1;
-				tt>>=1;
-			}
-			check(0);
-			if(deal()==-1)
-				continue;
-			else
-			{
-				gg=1;
-				output();
-				break;
-			}
+			int x,y;
+			scanf("%d%d",&x,&y);
+			aha[x].push_back(y);
+			aha[y].push_back(x);
 		}
-		if(gg==0)
-			printf("IMPOSSIBLE\n");
+		for(int i=1;i<=n;i++)
+			scanf("%lf%lf",&k[i],&e[i]);
+
+		printf("Case %d: ",cass++);
+		memset(a,0,sizeof(a));
+		memset(b,0,sizeof(b));
+		memset(flag,0,sizeof(flag));
+
+		dfs(1,1);
+		double ans=c[1]/(1-a[1]);
+		if(fabs(ans)<eps)
+			printf("impossible\n");
+		else 
+			printf("%.6lf\n",ans);
 	}
     return 0;
 }
 
-int deal()
+int dfs(int node,int f)
 {
-	for(int i=1;i<m;i++)
+	int len=aha[node].size();
+	if(len==1 && node!=1) return 0;
+
+	double tmp1=0,tmp2=0,tmp3=0;
+	double m=len;
+	for(int i=0;i<len;i++)
 	{
-		for(int j=0;j<n;j++)
+		if(aha[node][i]==f) continue;
+		int next=aha[node][i];
+		if(flag[next]==0)
 		{
-			if(flag[i-1][j]%2==1)
-            {
-                endit[i][j]=1;
-                //flag[i-1][j]=0;
-            }
-			else
-                endit[i][j]=0;
+			dfs(next,node);
+			flag[next]=1;
 		}
-		check(i);
+		tmp1+=a[next];
+		tmp2+=b[next];
+		tmp3+=c[next];
 	}
-
-	for(int i=0;i<n;i++)
-		if(flag[m-1][i]%2==1)
-			return -1;
+	double pp=(1-k[node]-e[node])/m;
+	a[node]=(k[node]+pp*tmp1)/(1-pp*tmp2);
+	b[node]=pp/(1-pp*tmp2);
+	c[node]=(pp*tmp3+pp*m)/(1-pp*tmp2);
 	return 0;
 }
 
-int check(int len) // len--hang
-{
-	for(int i=0;i<n;i++)
-	{
-		int tmp=0;
-		if(i>0)
-        {
-            if(endit[len][i-1]%2!=0)
-                tmp++;
-        }
-        if(i<n-1)
-        {
-            if(endit[len][i+1]%2!=0)
-                tmp++;
-        }
-		if(len>0)
-        {
-            if(endit[len-1][i]%2==1)
-                tmp++;
-        }
-        tmp+=mapp[len][i];
-        tmp+=endit[len][i];
-		flag[len][i]=tmp%2;
-	}
-	return 0;
-}
 
-int output()
-{
-	for(int i=0;i<m;i++)
-	{
-		for(int j=0;j<n;j++)
-		{
-			if(j==0)
-				printf("%d",endit[i][j]%2);
-			else
-				printf(" %d",endit[i][j]%2);
-		}
-		printf("\n");
-	}
-	return 0;
-}
+
+

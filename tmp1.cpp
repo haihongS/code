@@ -1,150 +1,79 @@
-#include <iostream>
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
-#include <cmath>
-
+#include<iostream>
+#include<cstring>
+#include<cmath>
+#include<algorithm>
+#include<cstdio>
+#include<map>
+#include<queue>
+#include<vector>
 using namespace std;
-const int MAXSIZE=1e5+9;
 
-int Mark[MAXSIZE];
-int prime[MAXSIZE];
+const int maxn=2e4+10;
+typedef long long ll;
 
-long long gcd(long long x,long long y);
-long long Eular(long long x);
-long long quickpow(long long m,long long n,long long k);
-int Prime();
+int n;
+
+struct II
+{
+    int x,dir,v;
+}num[maxn];
+
+int cmp(const II &a,const II&b);
 
 int main()
 {
-    int len=Prime();
-    long long x,y,a0;
-    while(~scanf("%lld%lld%lld",&x,&y,&a0))
+    int t;
+    scanf("%d",&t);
+    int cass=1;
+    while(t--)
     {
-        long long lam=y/(1-x);
-        if(lam==0)
-        {
-            printf("1\n");
-            continue;
-        }
-        if(a0%lam==0)
-        {
-            printf("1\n");
-            continue;
-        }
-        long long thegcd=gcd(abs(lam),abs(a0));
-        a0/=thegcd;
-        if(gcd(abs(a0),x)!=1)
-        {
-            printf("Impossible!\n");
-            continue;
-        }
-        long long ans=Eular(abs(a0));
-        a0=abs(a0);
-        long long endit=sqrt(ans);
-        long long flag=0;
-        for(int i=0;i<len;i++)
-        {
-            if(prime[i]>endit)
-                break;
-            if(ans%prime[i]==0)
-            {
-                if(quickpow(x,prime[i],a0)==1)
-                {
-                    flag=prime[i];
-                    break;
-                }
-            }
-        }
-        if(flag==0)
-            printf("%lld\n",ans);
-        else
-            printf("%lld\n",flag);
-    }
+        scanf("%d",&n);
+        memset(num,0,sizeof(num));
 
+        int cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            int x,y,z,d;
+            scanf("%d%d%d%d",&x,&y,&z,&d);
+            int t1=x+z,t2=y-z;
+            if(t2>t1) continue;
+            num[cnt].x=t2,num[cnt].dir=d,num[cnt].v=1;cnt++;
+            num[cnt].x=t1+1,num[cnt].dir=d,num[cnt].v=-1;cnt++;
+        }
+        sort(num,num+cnt,cmp);
+
+//        for(int i=0;i<cnt;i++)
+  //          printf("%d %d %d\n",num[i].x,num[i].dir,num[i].v);
+
+        printf("Case #%d:\n",cass++);
+
+        int ans=0,tmp=0;
+        int a1=0,a2=0;
+        for(int i=0;i<cnt;i++)
+        {
+            if(num[i].dir==1) a1+=num[i].v;
+            else a2+=num[i].v;
+            tmp=max(tmp,a2);
+            ans=max(ans,tmp+a1);
+        }
+        /*
+        a1=a2=tmp=0;
+        for(int i=0;i<cnt;i++)
+        {
+            if(num[i].dir==-1) a1+=num[i].v;
+            else a2+=num[i].v;
+            tmp=max(tmp,a2);
+            ans=max(ans,tmp+a1);
+        }
+        */
+
+        printf("%d\n",ans);
+    }
     return 0;
 }
 
-long long gcd(long long x,long long y)
+int cmp(const II &a,const II&b)
 {
-    if(x<y)
-        return gcd(y,x);
-    if(y==0)
-        return x;
-    if(x&1)
-    {
-        if(y&1)
-            return gcd(x-y,y);
-        else
-            return gcd(x,y>>1);
-    }
-    else
-    {
-        if(y&1)
-            return gcd(x>>1,y);
-        else
-            return gcd(x>>1,y>>1)<<1;
-    }
-}
-
-long long Eular( long long x)
-{
-    if( x == 0 ) return 0;
-    long long res = 1, t = x;
-    for(long long i = 2; i <= (long long)sqrt(1.*x); i++)
-    {
-        if( t%i == 0 )
-        {
-            res *= (i-1);
-            t /= i;
-            while( t%i ==0 )
-            {
-                res *= i;
-                t /= i;
-            }
-        }
-        if( t == 1 ) break;
-    }
-    if( t > 1 )
-    {
-        res *= (t-1);
-    }
-    return res;
-}
-
-long long quickpow(long long m,long long n,long long k)
-{
-    long long b = 1;
-    while (n > 0)
-    {
-        if (n & 1)
-            b = (b*m)%k;
-        n = n >> 1 ;
-        m = (m*m)%k;
-    }
-    return b;
-}
-
-int Prime()
-{
-    int index = 0;
-    memset(Mark,0,sizeof(Mark));
-    for(int i = 2; i < MAXSIZE; i++)
-    {
-        //如果未标记则得到一个素数
-        if(Mark[i] == 0)
-        {
-            prime[index++] = i;
-        }
-        //标记目前得到的素数的i倍为非素数
-        for(int j = 0; j < index && prime[j] * i < MAXSIZE; j++)
-        {
-            Mark[i * prime[j]] = 1;
-            if(i % prime[j] == 0)
-            {
-                break;
-            }
-        }
-    }
-    return index;
+    if(a.x==b.x) return a.v<b.v;
+    return a.x<b.x;
 }

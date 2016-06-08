@@ -1,101 +1,120 @@
-/* ***********************************************
-Author        :shootPlane
-Created Time  :2016/5/22 19:45:36
-File Name     :D:\sherlock\main.cpp
-Blog          :http://haihongblog.com
-************************************************ */
-
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <vector>
-#include <queue>
-#include <set>
-#include <map>
-#include <string>
 #include <cmath>
-#include <algorithm>
-#include <ctime>
-#include <stack>
+#include <queue>
+#include <utility>
+
 using namespace std;
-typedef long long ll;
-const int maxn=2e4+9;
-const int inf=1e9+9;
-const double eps=1e-9;
+const int maxn=2e5+9;
+const int inf=2e9+9;
 
-int n;
-double k[maxn],e[maxn];
-double a[maxn],b[maxn],c[maxn];
+int n,m,c;
 vector<int> aha[maxn];
-int flag[maxn];
 
-int dfs(int node,int f);
+struct edge
+{
+	int to,cost;
+};
+
+typedef pair<int,int> P;
+
+vector<edge> G[maxn];
+int d[maxn];
+
+void Dijkstra();
 
 int main()
 {
-    //freopen("in.txt","r",stdin);
-    //freopen("out.txt","w",stdout);
-    int t;
+	int t;
 	scanf("%d",&t);
 	int cass=1;
 	while(t--)
 	{
-		for(int i=0;i<maxn;i++) aha[i].clear();
-
-		scanf("%d",&n);
-		for(int i=0;i<n-1;i++)
+		for(int i=0;i<maxn;i++)
 		{
-			int x,y;
-			scanf("%d%d",&x,&y);
-			aha[x].push_back(y);
-			aha[y].push_back(x);
+			aha[i].clear();
+			G[i].clear();
+			d[i]=inf;
 		}
+		scanf("%d%d%d",&n,&m,&c);
 		for(int i=1;i<=n;i++)
-			scanf("%lf%lf",&k[i],&e[i]);
-
-		printf("Case %d: ",cass++);
-		memset(a,0,sizeof(a));
-		memset(b,0,sizeof(b));
-		memset(flag,0,sizeof(flag));
-
-		dfs(1,1);
-		double ans=c[1]/(1-a[1]);
-		if(fabs(ans)<eps)
-			printf("impossible\n");
-		else 
-			printf("%.6lf\n",ans);
-	}
-    return 0;
-}
-
-int dfs(int node,int f)
-{
-	int len=aha[node].size();
-	if(len==1 && node!=1) return 0;
-
-	double tmp1=0,tmp2=0,tmp3=0;
-	double m=len;
-	for(int i=0;i<len;i++)
-	{
-		if(aha[node][i]==f) continue;
-		int next=aha[node][i];
-		if(flag[next]==0)
 		{
-			dfs(next,node);
-			flag[next]=1;
+			int x;
+			scanf("%d",&x);
+			aha[x].push_back(i);
 		}
-		tmp1+=a[next];
-		tmp2+=b[next];
-		tmp3+=c[next];
+		for(int i=1;i<n;i++)
+		{
+			for(int j=0;j<aha[i].size();j++)
+			{
+				for(int k=0;k<aha[i+1].size();k++)
+				{
+					int x=aha[i][j],y=aha[i][k];
+					edge tmp={y,c};
+					G[x].push_back(tmp);
+					tmp.to=x;
+					G[y].push_back(tmp);
+				}
+			}
+		}
+		for(int i=0;i<aha[1].size();i++)
+		{
+			for(int j=0;j<aha[n].size();j++)
+			{
+				int x=aha[1][i],y=aha[n][j];
+				edge tmp={y,c};
+				G[x].push_back(tmp);
+				tmp.to=x;
+				G[y].push_back(tmp);
+			}
+		}
+		
+		for(int i=0;i<n;i++)
+		{
+			int u,v,w;
+			scanf("%d%d%d",&u,&v,&w);
+			edge tmp;
+			tmp.cost=w,tmp.to=v;
+			G[u].push_back(tmp);
+			tmp.to=u;
+			G[v].push_back(tmp);
+		}
+
+
+		printf("Case #%d: ",cass++);
+		Dijkstra();
+		if(d[n]==inf)
+			printf("-1\n");
+		else
+			printf("%d\n",d[n]);
 	}
-	double pp=(1-k[node]-e[node])/m;
-	a[node]=(k[node]+pp*tmp1)/(1-pp*tmp2);
-	b[node]=pp/(1-pp*tmp2);
-	c[node]=(pp*tmp3+pp*m)/(1-pp*tmp2);
 	return 0;
 }
 
+void Dijkstra()
+{
+	d[1]=0;
+	priority_queue<P ,vector<P> ,greater<P> > go;
+	while(!go.empty()) go.pop();
+	go.push(P(0,1));
 
-
+	while(!go.empty())
+	{
+		P tp=go.top();go.pop();	
+		int v=tp.second;
+		if(d[v]<tp.first) continue;
+		for(int i=0;i<G[v].size();i++)
+		{
+			edge next=G[v][i];
+			if(d[next.to]>d[v]+next.cost)
+			{
+				d[next.to]=d[v]+next.cost;
+				go.push(P(d[next.to],next.to));
+			}
+		}
+	}
+}
 

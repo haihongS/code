@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  fix-mariadb-volume-ownership:
+    image: 'bitnami/mariadb:latest'
+    user: root
+    command: chown -R 1001:1001 /bitnami
+    volumes:
+      - /home/admin/phabricator/volumes/mariadb:/bitnami
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - /home/admin/phabricator/volumes/mariadb:/bitnami
+    depends_on:
+      - fix-mariadb-volume-ownership
+  phabricator:
+    image: bitnami/phabricator:latest
+    depends_on:
+      - mariadb
+    ports:
+      - '7788:80'
+      - '7789:443'
+    environment:
+      - PHABRICATOR_USERNAME=qqq
+      - PHABRICATOR_PASSWORD=www
+      - PHABRICATOR_EMAIL=wwww
+      - SMTP_HOST=smtp.exmail.qq.com
+      - SMTP_PORT=465
+      - SMTP_USER=xxx
+      - SMTP_PASSWORD=xxx
+      - SMTP_PROTOCOL=ssl
+    volumes:
+      - /home/admin/phabricator/volumes/phabricator:/bitnami

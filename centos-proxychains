@@ -1,0 +1,20 @@
+yum install python-setuptools && easy_install pip
+yum install git -y
+yum install gcc -y
+
+git clone https://github.com/haad/proxychains
+cd proxychains/
+./configure --sysconfdir=/usr/local/etc
+make && make install
+
+
+cp proxychains/src/proxychains.conf /etc/proxychains.conf 
+vi /etc/proxychains.conf 
+
+[ProxyList]
+# add proxy here ...
+# meanwile
+# defaults set to "tor"
+socks5 192.168.1.2 1080
+
+proxychains4 ... ...

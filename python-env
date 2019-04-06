@@ -1,0 +1,17 @@
+git clone https://github.com/beancount/fava.git
+cd fava
+# using a virtual environment is optional, but recommended
+virtualenv -p python3 venv
+. venv/bin/activate
+make
+pip install --editable .
+
+use virtualenv
+
+readline error:
+
+pip install gnureadline
+or
+pip3 install gnureadline
+
+try: import gnureadline as readline except ImportError: import readline

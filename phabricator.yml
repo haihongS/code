@@ -33,3 +33,22 @@ services:
       - SMTP_PROTOCOL=ssl
     volumes:
       - /home/admin/phabricator/volumes/phabricator:/bitnami
+
+
+
+cat /bitnami/phabricator/conf/local/local.json | grep base-uri
+/opt/bitnami/phabricator/bin/config set phabricator.base-uri http://xxx.com:1234
+
+/home/admin/phabricator/volumes
+
+
+https://maiyang.me/post/2018-10-31-install-phabricator-with-docker/
+https://hub.docker.com/r/bitnami/phabricator/
+
+sudo apt install python-pygments
+
+chown -R phabricator:daemon /bitnami/phabricator/data
+chmod -R 775 /bitnami/phabricator/data
+
+metamta.reply-handler-domain: company.com
+metamta.can-send-as-user: false

@@ -1,0 +1,49 @@
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "listaddressgroupings", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+ curl --user sherlock --data-binary '{"jsonrpc": "2.0", "id":"curltest", "method": "gettransaction", "params": ["wefwefwef"] }' -H 'content-type: text/plain;' http://66.42.50.102:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_sendmany", "params": ["x", [{"address": "wfewefwef" ,"amount": 9.899}]] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "sendmany", "params": ["", {"wefwefwef":0.001}, 6, "testing"] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_getoperationstatus", "params": [["opid-cb7a2572-fa80-475f-a497-4f866dce07d1"]] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_getbalance", "params": ["wefwefwef", 1] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_gettotalbalance", "params": [1] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_listaddresses", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_getnewaddress", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getnewaddress", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getaddressesbyaccount", "params": [""] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "estimatefee", "params": [6] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "estimatepriority", "params": [6] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblock", "params": ["12800"] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "backupwallet", "params": ["wefwef"] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_exportwallet", "params": ["wefwef"] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_shieldcoinbase", "params": ["wefwef", "wefwefw", 0.0001, 1] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_getbalance", "params": ["zswfwefwe", 1] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_validateaddress", "params": ["zsdddddd"] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "z_shieldcoinbase", "params": ["t1sssss", "zssssss", 0.0001, 1] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getblockcount", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "importwallet", "params": ["/mnt/vdb/zcash/data/tes"] }' -H 'content-type: text/plain;' http://127.0.0.1:8232/
+
+
+
+curl --user sherlock --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getinfo", "params": [] }' -H 'content-type: text/plain;' http://172.19.1.50:18232/

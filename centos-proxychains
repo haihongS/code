@@ -9,12 +9,7 @@ make && make install
 
 
 cp proxychains/src/proxychains.conf /etc/proxychains.conf 
-vi /etc/proxychains.conf 
 
-[ProxyList]
-# add proxy here ...
-# meanwile
-# defaults set to "tor"
-socks5 192.168.1.2 1080
-
-proxychains4 ... ...
+#do this below
+#vim /etc/proxychains.conf 
+# socks5 127.0.0.1 1080

@@ -1,6 +1,31 @@
 Tera api
 =======
-## stratum<->miner
+## stratum <-> node
+### getwork
+/api/v2/GetWork
+```
+{
+  "result":1,
+  "data":[
+    "a", // BlockNum
+    "a", // MinerId
+    "a", // SeqHash
+    "a", // PrevHash
+  ],
+}
+```
+### submit
+/api/v2/Submit
+```
+{
+  "", // SeqHash
+  "", // Hash
+  "", // PowHash
+  "", // Addrhash
+}
+```
+
+## stratum <-> miner
 ### login
 ```
 {

@@ -7,11 +7,11 @@ Tera api
 {
   "result":1,
   "data":[
-    "a", // BlockNum
-    "a", // MinerId
-    "a", // SeqHash
-    "a", // PrevHash
-  ],
+    "35752521", // BlockNum
+    "210803", // MinerId
+    "f1b9f6539c4391225ea4f0f760428c576c8b7ca6a5814fe6bb350314998472b4", // SeqHash
+    "37797691fb3ee3fbe7fc515a75a8543a95396e502096e6ec1a78b0e938818106" // PrevHash
+  ]
 }
 ```
 ### submit

@@ -18,6 +18,7 @@ Tera api
 /api/v2/Submit
 ```
 {
+  "", // BlockNum
   "", // SeqHash
   "", // Hash
   "", // PowHash

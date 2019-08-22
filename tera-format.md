@@ -39,16 +39,16 @@ Tera api
 ### notify
 ```
 {
-  id: 3,
+  jsonrpc: "2.0",
   method: "notify",
   result: [
-    "11", // JobId
-    "15", // MinPow
-    "23", // StNonce
-    "23", // BlockNum
-    "33", // MinerId
-    "f2", // PrevHash
-    "3f", // SeqHash
+    "17059299314942967121", // JobId
+    "a", // MinPow
+    "14000000000", // StNonce
+    "225b35f", // BlockNum
+    "33773", // MinerId
+    "225c17980cb14e4c5020b9ec07b5596518c8d80f8afac61e085b9dbd2ba5492b", // PrevHash
+    "f25e4aea05e6092d4f2d80f6c4e7a332fd417d85062993fd5107c2f55318bd92", // SeqHash
   ],
 }
 ```

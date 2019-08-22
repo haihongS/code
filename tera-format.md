@@ -43,7 +43,7 @@ Tera api
   method: "notify",
   result: [
     "11", // JobId
-    "15", // RunRange
+    "15", // MinPow
     "23", // StNonce
     "23", // BlockNum
     "33", // MinerId

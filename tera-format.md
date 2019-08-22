@@ -56,15 +56,15 @@ Tera api
 ### submit
 ```
 {
-  id: 4,
+  id: 175416,
   method: "submit",
   result: [
-    "11", // JobId
-    "af", // BlockNum
-    "ac", // SeqHash
-    "ac", // Hash
-    "ac", // PowHash
-    "ac", // AddrHash
+    "5095495887142307967", // JobId
+    "225abf1", // BlockNum
+    "295da1162d04d85524a5383fa49261f892ce542729ca7e780d4e068696792d20", // SeqHash
+    "fc0822c6362c806046d97dbd79cb6df4f5515819c674a1bfcaf683cdda3003f9", // Hash
+    "0000000150bc4429c44d451ce7a559a0b58cb5ae61a8c51009533c1e789e251b", // PowHash
+    "7337030000006b3d080000055002702b00006f1206780000fc05c201725e8c02", // AddrHash
   ],
 }
 
